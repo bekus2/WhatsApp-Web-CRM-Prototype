@@ -1,4 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
+/**
+ * Project: WhatsApp Web CRM Prototype
+ * File: src/components/LeadDetail.tsx
+ * Author: Beck Sarbassov
+ * Version: 0.1.0
+ * Date created: 2026-06-23
+ * Last updated: 2026-06-23
+ * Copyright: © Beck Sarbassov. All rights reserved.
+ *
+ * EN: Loads and edits a lead profile, message history, and activity timeline.
+ * RU: Загружает и редактирует профиль лида, переписку и ленту активности.
+ */
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { supabase, type Lead, type Message, type PipelineStage, type LeadActivity } from '../lib/supabase';
 import { ArrowLeft, Send, Phone, Mail, User, MessageCircle, FileText, Clock } from 'lucide-react';
 import type { View } from '../App';
@@ -18,19 +30,7 @@ export default function LeadDetail({ leadId, onNavigate }: LeadDetailProps) {
   const [tab, setTab] = useState<'chat' | 'info' | 'activity'>('chat');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetchLead();
-    const sub = supabase.channel(`lead-${leadId}`)
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages', filter: `lead_id=eq.${leadId}` }, fetchLead)
-      .subscribe();
-    return () => { supabase.removeChannel(sub); };
-  }, [leadId]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  const fetchLead = async () => {
+  const fetchLead = useCallback(async () => {
     const { data: leadData } = await supabase.from('leads').select('*').eq('id', leadId).single();
     if (leadData) setLead(leadData);
     const { data: msgData } = await supabase.from('messages').select('*').eq('lead_id', leadId).order('created_at', { ascending: true });
@@ -39,7 +39,19 @@ export default function LeadDetail({ leadId, onNavigate }: LeadDetailProps) {
     setStages(stagesData || []);
     const { data: actData } = await supabase.from('lead_activities').select('*').eq('lead_id', leadId).order('created_at', { ascending: false });
     setActivities(actData || []);
-  };
+  }, [leadId]);
+
+  useEffect(() => {
+    fetchLead();
+    const sub = supabase.channel(`lead-${leadId}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'messages', filter: `lead_id=eq.${leadId}` }, fetchLead)
+      .subscribe();
+    return () => { supabase.removeChannel(sub); };
+  }, [fetchLead, leadId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!newMessage.trim()) return;

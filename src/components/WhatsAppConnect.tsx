@@ -1,3 +1,15 @@
+/**
+ * Project: WhatsApp Web CRM Prototype
+ * File: src/components/WhatsAppConnect.tsx
+ * Author: Beck Sarbassov
+ * Version: 0.1.0
+ * Date created: 2026-06-23
+ * Last updated: 2026-06-23
+ * Copyright: © Beck Sarbassov. All rights reserved.
+ *
+ * EN: Shows WhatsApp bridge connection status and QR code state from Supabase.
+ * RU: Показывает статус bridge WhatsApp и QR-код из Supabase.
+ */
 import { useEffect, useState } from 'react';
 import { supabase, type WhatsAppSession } from '../lib/supabase';
 import { Smartphone, RefreshCw, CheckCircle, AlertCircle } from 'lucide-react';
@@ -29,6 +41,8 @@ export default function WhatsAppConnect() {
   };
 
   const cfg = statusConfig[session?.status || 'disconnected'];
+
+  if (loading) return <div className="p-8">Р—Р°РіСЂСѓР·РєР°...</div>;
 
   return (
     <div className="p-8 h-full overflow-y-auto">

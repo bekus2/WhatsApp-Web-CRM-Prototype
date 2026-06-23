@@ -1,7 +1,19 @@
+/**
+ * Project: WhatsApp Web CRM Prototype
+ * File: src/components/Dashboard.tsx
+ * Author: Beck Sarbassov
+ * Version: 0.1.0
+ * Date created: 2026-06-23
+ * Last updated: 2026-06-23
+ * Copyright: © Beck Sarbassov. All rights reserved.
+ *
+ * EN: Loads dashboard CRM metrics, recent leads, and recent messages.
+ * RU: Загружает метрики CRM, новых лидов и последние сообщения.
+ */
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Users, MessageSquare, TrendingUp, Clock } from 'lucide-react';
-import type { Lead, Message } from '../lib/supabase';
+import type { Lead } from '../lib/supabase';
 import type { View } from '../App';
 
 interface DashboardProps {

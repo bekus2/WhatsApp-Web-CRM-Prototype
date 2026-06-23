@@ -1,3 +1,15 @@
+/**
+ * Project: WhatsApp Web CRM Prototype
+ * File: src/App.tsx
+ * Author: Beck Sarbassov
+ * Version: 0.1.0
+ * Date created: 2026-06-23
+ * Last updated: 2026-06-23
+ * Copyright: © Beck Sarbassov. All rights reserved.
+ *
+ * EN: Defines the main CRM view router and selected lead state.
+ * RU: Определяет основную навигацию CRM и состояние выбранного лида.
+ */
 import { useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -24,7 +36,7 @@ function App() {
         {view === 'dashboard' && <Dashboard onNavigate={handleNavigate} />}
         {view === 'leads' && <LeadsList onNavigate={handleNavigate} />}
         {view === 'pipeline' && <PipelineView onNavigate={handleNavigate} />}
-        {view === 'whatsapp' && <WhatsAppConnect onNavigate={handleNavigate} />}
+        {view === 'whatsapp' && <WhatsAppConnect />}
         {view === 'lead' && selectedLeadId && <LeadDetail leadId={selectedLeadId} onNavigate={handleNavigate} />}
       </main>
     </div>

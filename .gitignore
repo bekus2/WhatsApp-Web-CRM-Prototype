@@ -21,3 +21,9 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# WhatsApp Web local authentication/session data.
+bridge/.wwebjs_auth/
+bridge/.wwebjs_cache/
+.wwebjs_auth/
+.wwebjs_cache/

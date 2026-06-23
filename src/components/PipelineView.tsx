@@ -1,6 +1,17 @@
+/**
+ * Project: WhatsApp Web CRM Prototype
+ * File: src/components/PipelineView.tsx
+ * Author: Beck Sarbassov
+ * Version: 0.1.0
+ * Date created: 2026-06-23
+ * Last updated: 2026-06-23
+ * Copyright: © Beck Sarbassov. All rights reserved.
+ *
+ * EN: Displays leads grouped by pipeline stages and initializes a default pipeline.
+ * RU: Показывает лиды по этапам воронки и создает стандартную воронку.
+ */
 import { useEffect, useState } from 'react';
 import { supabase, type Lead, type Pipeline, type PipelineStage } from '../lib/supabase';
-import { Plus, MoreHorizontal } from 'lucide-react';
 import type { View } from '../App';
 
 interface PipelineViewProps {
@@ -89,6 +100,17 @@ export default function PipelineView({ onNavigate }: PipelineViewProps) {
                         'bg-gray-50 text-gray-700'
                       }`}>{lead.status}</span>
                     </div>
+                    <select
+                      value={lead.pipeline_stage_id || ''}
+                      onClick={(event) => event.stopPropagation()}
+                      onChange={(event) => handleStageChange(lead.id, event.target.value || null)}
+                      className="mt-3 w-full rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">Р‘РµР· СЌС‚Р°РїР°</option>
+                      {stages.map((targetStage) => (
+                        <option key={targetStage.id} value={targetStage.id}>{targetStage.name}</option>
+                      ))}
+                    </select>
                   </div>
                 ))}
                 {stageLeads.length === 0 && <div className="text-xs text-gray-400 text-center py-4">Нет лидов</div>}
@@ -119,6 +141,17 @@ export default function PipelineView({ onNavigate }: PipelineViewProps) {
                     'bg-gray-50 text-gray-700'
                   }`}>{lead.status}</span>
                 </div>
+                <select
+                  value={lead.pipeline_stage_id || ''}
+                  onClick={(event) => event.stopPropagation()}
+                  onChange={(event) => handleStageChange(lead.id, event.target.value || null)}
+                  className="mt-3 w-full rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Р‘РµР· СЌС‚Р°РїР°</option>
+                  {stages.map((targetStage) => (
+                    <option key={targetStage.id} value={targetStage.id}>{targetStage.name}</option>
+                  ))}
+                </select>
               </div>
             ))}
           </div>
